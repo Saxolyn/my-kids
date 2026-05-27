@@ -1,55 +1,91 @@
-# Tài Liệu Dự Án: Ứng Dụng Web Luyện Tập "Toán Vui Pro"
 
-Ứng dụng **Toán Vui Pro** là một nền tảng Web Single-Page (SPA) gọn nhẹ, giúp người dùng (đặc biệt là trẻ em) luyện tập các phép tính toán học cơ bản (Cộng, Trừ, Nhân, Hỗn hợp) một cách trực quan, vui nhộn thông qua cơ chế trò chơi hóa (Gamification).
+# 🌟 Toán Vui Pro — Thi Đấu Tập Trung
 
-## 1. Yêu Cầu Nghiệp Vụ (Requirements)
+**Toán Vui Pro** là một ứng dụng web dạng Single-Page Application (SPA) giúp người dùng (đặc biệt là học sinh) luyện tập và thi đấu tính nhẩm các phép toán cơ bản. Ứng dụng mang lại trải nghiệm học tập thú vị, tập trung và có hệ thống theo dõi tiến độ rõ ràng.
 
-### 1.1. Quản lý Hồ Sơ (Profile Management)
-- Hỗ trợ tạo nhiều hồ sơ người dùng độc lập (Tên, Nhân vật Avatar biểu cảm, Màu sắc chủ đề).
-- Tự động lưu giữ Profile hoạt động gần nhất. Khi người dùng truy cập lại, hệ thống tự động đăng nhập thẳng vào profile đó mà không cần chọn lại từ đầu.
+## 🎯 Mục đích chức năng
 
-### 1.2. Cơ Chế Trò Chơi & Bộ Đếm Thời Gian
-- **Màn hình đếm ngược (Countdown):** Hiển thị hiệu ứng đếm ngược trực quan trước khi chính thức bắt đầu bài tập nhằm tạo sự tập trung.
-- **Bộ bài tập:** Mỗi lượt chơi gồm đúng 20 câu hỏi ngẫu nhiên dựa theo phép tính đã chọn.
-- **Thời gian:** Đo lường chính xác thời gian hoàn thành từng câu hỏi (đơn vị giây) và tổng thời gian của cả lượt chơi.
-- **Phản hồi thời gian thực:** Hiển thị hiệu ứng hoạt họa (Animation) khi trả lời Đúng (🎉/✨) hoặc Sai (💥) kèm theo việc hiển thị đáp án chính xác ngay lập tức.
-
-### 1.3. Quản Lý Độ Khó & Cấu Hình Cao Cấp (Settings)
-Cung cấp bảng cài đặt riêng biệt cho từng Profile để tùy chỉnh trải nghiệm:
-- **Độ khó (Dải số):**
-  - Mức 2 chữ số: Sinh số ngẫu nhiên trong khoảng [10 - 99].
-  - Mức 3 chữ số: Sinh số ngẫu nhiên trong khoảng [100 - 999].
-  - Mức 4 chữ số: Sinh số ngẫu nhiên trong khoảng [1000 - 9999].
-  - Mức Tùy chọn: Người dùng tự điền khoảng số [Min - Max] theo nhu cầu.
-- **Thời gian đếm ngược:** Cho phép chọn giữa các mốc 3s, 5s, 10s, 15s hoặc nhập số giây tùy biến.
-
-### 1.4. Thống Kê Lịch Sử & Đồng Bộ Dữ Liệu
-- **Gom nhóm theo ngày:** Hệ thống tự động nhóm tất cả các lượt chơi phát sinh trong cùng một ngày (`DD/MM/YYYY`).
-- **Tỷ lệ đúng trung bình:** Nếu một ngày chơi nhiều lần, tỷ lệ chính xác được tính bằng công thức:
-  $$\text{Tỷ lệ đúng trung bình} = \left( \frac{\sum \text{Số câu đúng}}{\sum \text{Tổng số câu hỏi}} \right) \times 100\%$$
-- **Xuất dữ liệu (Export CSV):** Hỗ trợ xuất toàn bộ lịch sử chi tiết của profile hiện tại ra file `.csv` (tích hợp chuẩn mã hóa BOM UTF-8 để tránh lỗi font hiển thị trên Microsoft Excel).
-- **Nhập dữ liệu (Import/Restore CSV):** Cho phép nạp lại file `.csv` lịch sử đã xuất trước đó vào hệ thống để khôi phục dữ liệu khi người dùng chuyển thiết bị hoặc xóa cache trình duyệt.
+* **Luyện phản xạ Toán học:** Cung cấp môi trường thi đấu tính toán nhanh với các phép tính Cộng, Trừ, Nhân, Chia và Hỗn hợp.
+* **Cá nhân hóa trải nghiệm học tập:** Hỗ trợ nhiều người chơi trên cùng một thiết bị thông qua hệ thống "Hồ sơ người dùng" (Profiles).
+* **Theo dõi tiến độ:** Ghi nhận lại lịch sử thi đấu, tính toán tỷ lệ chính xác theo ngày để phụ huynh hoặc người dùng tự đánh giá sự tiến bộ.
+* **Ứng dụng độc lập, nhẹ nhàng:** Hoạt động mượt mà không cần cài đặt phức tạp, toàn bộ dữ liệu được lưu trữ an toàn ngay trên trình duyệt của người dùng.
 
 ---
 
-## 2. Phân Tích Kiến Trúc Kỹ Thuật (Architecture Analysis)
+## ✨ Các chức năng chính
 
-Mặc dù ứng dụng được đóng gói trọn gói trong **1 file HTML duy nhất (Vanilla HTML/CSS/JS)** để tối ưu tốc độ tải và tính cơ động, cấu trúc mã nguồn vẫn đảm bảo phân tách tư duy rõ ràng tương tự các kiến trúc hiện đại:
+### 1. Quản lý Hồ sơ (Profile Management)
 
-### 2.1. Tầng Giao Diện (Frontend - View Layer)
-- **CSS Variables (:root):** Quản lý tập trung hệ màu sắc tươi sáng (Pastel) giúp dễ dàng thay đổi theme toàn cục.
-- **Single-Page Navigation:** Sử dụng kỹ thuật ẩn/hiện các khối thuộc tính `.screen` thông qua class `.active` do JavaScript điều khiển, mang lại trải nghiệm mượt mà không bị reload trang:
-  - `screen-home`: Màn hình danh sách hồ sơ.
-  - `screen-countdown`: Màn hình đếm ngược chuẩn bị vào trận.
-  - `screen-mode`: Màn hình trung tâm chọn phép tính, xem cấu hình và bảng lịch sử theo ngày.
-  - `screen-quiz`: Không gian tương tác trả lời câu hỏi và bàn phím số (Numpad) ảo.
-  - `screen-results`: Màn hình báo cáo tổng kết hiệu suất sau 20 câu.
+* Tạo nhiều hồ sơ với tên, hình đại diện (Avatar Emoji) và màu sắc cá nhân hóa.
+* Lưu trữ dữ liệu độc lập cho từng hồ sơ (lịch sử, cài đặt cá nhân).
 
-### 2.2. Tầng Logic Xử Lý & Sinh Dữ Liệu (Controller & Business Layer)
-- **Thuật toán sinh số ngẫu nhiên:** Đảm bảo tuân thủ nghiêm ngặt dải biên `[Min - Max]` từ cấu hình. Đối với phép trừ, thuật toán tự động đảo vị trí để số bị trừ luôn lớn hơn hoặc bằng số trừ ($a \ge b$), tránh sinh ra kết quả âm không phù hợp với lứa tuổi tiểu học. Đối với phép nhân dải lớn, hệ thống tự động tối ưu hóa cấu trúc một thừa số nhỏ kết hợp một thừa số lớn để bài toán giữ được tính thực tế cao.
+### 2. Chế độ Thi đấu Đa dạng
 
-### 2.3. Tầng Lưu Trữ & Đồng Bộ (Data & Storage Layer)
-- **Local Storage State:** Toàn bộ trạng thái bao gồm thông tin cá nhân, cấu hình bài tập, và mảng danh sách lịch sử (`sessions`) được đồng bộ hóa tức thời xuống Trình duyệt thông qua JSON Stringify.
-- **CSV Parser/Generator:** Sử dụng đối tượng `Blob` kết hợp URL Object để sinh file download ở phía Client-side mà không cần máy chủ (Backend server). Tầng đọc file sử dụng `FileReader` để phân tách dòng (split) và đưa ngược dữ liệu vào mảng State.
+* **5 chế độ chơi:** Phép Cộng (➕), Phép Trừ (➖), Phép Nhân (✖️), Phép Chia (➗), và Hỗn Hợp (🎲).
+* Thuật toán sinh câu hỏi thông minh, đảm bảo phép trừ không ra số âm, phép chia luôn chia hết không dư.
+
+### 3. Trải nghiệm Làm bài Thi (Quiz Interface)
+
+* **Bàn phím ảo (Numpad):** Hỗ trợ nhập liệu nhanh trên màn hình cảm ứng, có nút xóa và lưu đáp án.
+* **Điều hướng thông minh:** Thanh tiến trình trực quan, cho phép nhảy đến câu hỏi bất kỳ, tiến/lùi giữa các câu hỏi.
+* **Ràng buộc nộp bài:** Nút nộp bài chỉ kích hoạt khi 100% câu hỏi đã được điền đáp án, tránh tình trạng nộp nhầm/nộp thiếu.
+* Đồng hồ đếm giờ tổng thời gian làm bài.
+
+### 4. Báo cáo & Thống kê
+
+* Chấm điểm tự động và trao danh hiệu (Cúp/Huy chương) dựa trên tỷ lệ % chính xác.
+* Hiển thị chi tiết từng câu hỏi: Đáp án của người dùng vs. Đáp án đúng.
+* Bảng thống kê lịch sử: Tính tổng số trận, số câu đúng và tỷ lệ chính xác trung bình theo từng ngày.
+
+### 5. Cài đặt Nâng cao & Quản lý Dữ liệu
+
+* Tùy chỉnh số lượng câu hỏi (10, 20, 30 hoặc tự nhập).
+* Tùy chỉnh độ khó (Dải số có 2, 3, 4 chữ số, hoặc tự định nghĩa min-max).
+* Tùy chỉnh thời gian đếm ngược trước khi vào trận.
+* Chọn các phép tính cụ thể sẽ xuất hiện trong chế độ "Hỗn Hợp".
+* **Xuất/Nhập file CSV:** Cho phép tải lịch sử thi đấu xuống máy tính dưới dạng `.csv` và khôi phục dữ liệu từ file `.csv` (rất hữu ích để sao lưu hoặc chuyển thiết bị).
 
 ---
+
+## 🛠 Cấu trúc dự án
+
+Dự án được xây dựng gộp toàn bộ trong một tệp duy nhất (`.html`) để tối ưu tính di động và dễ triển khai. Cấu trúc bên trong tệp được chia thành 3 phần rõ rệt:
+
+1. **Khối `<style>` (CSS):**
+* Sử dụng CSS Variables (`:root`) để quản lý theme màu sắc.
+* Thiết kế giao diện dạng thẻ (Cards), lưới (Grid), và Flexbox để Responsive tốt trên nhiều kích thước màn hình.
+* Có các hiệu ứng Animation mượt mà (chuyển động của khối background, hiệu ứng đếm ngược, pop-up kết quả).
+
+
+2. **Khối Thẻ HTML (UI/DOM):**
+* Hệ thống chuyển trang (Screen Routing) qua các `div` có class `.screen`:
+* `#screen-home`: Màn hình tạo và chọn hồ sơ.
+* `#screen-mode`: Màn hình chọn phép toán và xem lịch sử.
+* `#screen-countdown`: Màn hình đếm ngược trước khi thi.
+* `#screen-quiz`: Giao diện làm bài chính.
+* `#screen-results`: Màn hình hiển thị điểm và chi tiết bài làm.
+
+
+* Hệ thống Modal Overlay (Pop-up) dành cho cài đặt, tạo profile và xác nhận hành động.
+
+
+3. **Khối `<script>` (Logic JavaScript):**
+* **State Management:** Quản lý cấu hình `appSettings`, danh sách người dùng `profiles`, trạng thái câu hỏi hiện tại `questions`, `userAnswers`.
+* **Core Logic:** Các hàm tạo câu hỏi (`generateQuestion`), luồng làm bài (`loadQuestion`, `validateInputState`), tính điểm (`processEvaluation`).
+* **Local Storage:** Lưu và lấy dữ liệu JSON liên tục (`toanyui_profiles_v3`).
+* **Xử lý File:** Logic đọc/ghi định dạng CSV bằng `FileReader` và `Blob`.
+
+
+
+---
+
+## 💻 Công nghệ sử dụng
+
+Dự án này là một ứng dụng **Vanilla Web Development** (không sử dụng framework nặng nề như React hay Vue), bao gồm:
+
+* **HTML5:** Xây dựng cấu trúc ngữ nghĩa, `inputmode` tối ưu bàn phím di động.
+* **CSS3:** Flexbox, CSS Grid, Custom Properties, Keyframe Animations.
+* **JavaScript (ES6+):** Xử lý logic nghiệp vụ, thao tác DOM trực tiếp, Template Literals, Destructuring.
+* **Web Storage API:** Sử dụng `localStorage` để lưu trữ cơ sở dữ liệu phi quan hệ (NoSQL-like) ngay trên trình duyệt.
+* **File API:** Xử lý nhập/xuất tệp tin dữ liệu cục bộ.
+* **Phông chữ (Google Fonts):** Sử dụng `Baloo 2` (tạo sự vui tươi, phù hợp trẻ em) và `Nunito` (dễ đọc).
