@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#FF6B6B">
+<title>Toán Vui Pro — Thi Đấu Tập Trung</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #FF6B6B; --red-dark: #E05555; --red-light: #FFE5E5;
+    --yellow: #FFD93D; --yellow-dark: #E6C200; --yellow-light: #FFFBE5;
+    --green: #6BCB77; --green-dark: #4CAF57; --green-light: #E5F9E7;
+    --blue: #4D96FF; --blue-dark: #2979E0; --blue-light: #E5EFFF;
+    --purple: #C77DFF; --purple-dark: #9B4FD4; --purple-light: #F3E5FF;
+    --orange: #FF9F1C; --orange-dark: #E08800;
+    --bg: #FFF8F0;
+    --white: #FFFFFF;
+    --text: #2D2D2D;
+    --text-soft: #6B6B6B;
+    --radius: 24px;
+    --radius-sm: 14px;
+    --shadow: 0 6px 0px rgba(0,0,0,0.12);
+    --shadow-sm: 0 3px 0px rgba(0,0,0,0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Baloo 2', cursive; }
+
+  .screen { display: none; min-height: 100vh; }
+  .screen.active { display: flex; flex-direction: column; }
+
+  /* ===== FLOATING SHAPES BG ===== */
+  .bg-shapes {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+  .shape {
+    position: absolute; border-radius: 50%;
+    animation: float 6s ease-in-out infinite;
+  }
+  .shape:nth-child(1) { width:80px;height:80px;background:#FFD93D33;top:5%;left:5%;animation-delay:0s; }
+  .shape:nth-child(2) { width:60px;height:60px;background:#6BCB7733;top:15%;right:8%;animation-delay:1s; }
+  .shape:nth-child(3) { width:100px;height:100px;background:#4D96FF22;bottom:20%;left:3%;animation-delay:2s; }
+  .shape:nth-child(4) { width:50px;height:50px;background:#FF6B6B33;bottom:10%;right:5%;animation-delay:0.5s; }
+  .shape:nth-child(5) { width:70px;height:70px;background:#C77DFF22;top:40%;right:2%;animation-delay:1.5s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(10deg); }
+  }
+
+  /* ===== COMMON ===== */
+  .container {
+    max-width: 700px; margin: 0 auto; padding: 24px 20px;
+    position: relative; z-index: 1; flex: 1; display: flex; flex-direction: column;
+  }
+
+  .btn {
+    font-family: 'Baloo 2', cursive;
+    font-size: 18px; font-weight: 700;
+    padding: 14px 28px;
+    border: none; border-radius: var(--radius-sm);
+    cursor: pointer; transition: all 0.12s ease;
+    box-shadow: var(--shadow);
+    letter-spacing: 0.3px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .btn:active { transform: translateY(3px); box-shadow: var(--shadow-sm); }
+
+  .btn-red    { background: var(--red); color: white; border-bottom: 5px solid var(--red-dark); }
+  .btn-yellow { background: var(--yellow); color: #5a4200; border-bottom: 5px solid var(--yellow-dark); }
+  .btn-green  { background: var(--green); color: white; border-bottom: 5px solid var(--green-dark); }
+  .btn-blue   { background: var(--blue); color: white; border-bottom: 5px solid var(--blue-dark); }
+  .btn-purple { background: var(--purple); color: white; border-bottom: 5px solid var(--purple-dark); }
+
+  .btn-outline {
+    background: white; color: var(--text);
+    border: 2.5px solid #E0D8CE;
+    border-bottom: 5px solid #C8C0B6;
+    box-shadow: none; font-size: 15px; padding: 10px 20px;
+  }
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; box-shadow: none !important; border-bottom-width: 5px !important; }
+
+  /* ===== SCREEN 1: HOME ===== */
+  #screen-home { background: linear-gradient(160deg, #FFF5E6 0%, #FFF0F8 50%, #EFF5FF 100%); }
+  .home-header { text-align: center; padding: 30px 20px 10px; position: relative; }
+  .home-logo { font-family: 'Baloo 2', cursive; font-size: 52px; font-weight: 800; background: linear-gradient(135deg, var(--red), var(--orange), var(--yellow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 8px; filter: drop-shadow(2px 3px 0 rgba(255,107,107,0.2)); }
+  .home-tagline { font-size: 16px; color: var(--text-soft); font-weight: 600; }
+  .star-row { display: flex; justify-content: center; gap: 6px; margin: 12px 0 20px; }
+  .star { font-size: 24px; animation: spin-star 3s ease-in-out infinite; }
+  .profile-section h2 { font-size: 20px; color: var(--text-soft); text-align: center; margin-bottom: 16px; }
+  .profiles-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  
+  .profile-card { background: white; border-radius: var(--radius); padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.15s ease; border: 3px solid transparent; box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 4px 0 rgba(0,0,0,0.06); }
+  .profile-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12), 0 4px 0 rgba(0,0,0,0.06); }
+  .profile-avatar { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin: 0 auto 10px; }
+  .profile-name { font-family: 'Baloo 2', cursive; font-size: 17px; font-weight: 700; color: var(--text); }
+  .profile-stats { font-size: 12px; color: var(--text-soft); margin-top: 4px; font-weight: 600; }
+  .add-profile-card { background: white; border-radius: var(--radius); padding: 20px 14px; text-align: center; cursor: pointer; border: 3px dashed #D8CFC6; transition: all 0.15s ease; }
+  .add-icon { font-size: 36px; margin-bottom: 8px; }
+  .add-text { font-family: 'Baloo 2', cursive; font-size: 15px; color: var(--text-soft); }
+
+  /* ===== SCREEN 2: MODE SELECT ===== */
+  #screen-mode { background: linear-gradient(160deg, #EFF5FF 0%, #FFF0F8 100%); }
+  .mode-header { display: flex; align-items: center; justify-content: space-between; padding: 24px 20px 0; position: relative; z-index: 1; }
+  .header-left { display: flex; align-items: center; gap: 12px; }
+  
+  .back-btn { 
+    font-family: 'Baloo 2', cursive; font-size: 20px; font-weight: 800;
+    width: 50px; height: 46px; border-radius: var(--radius-sm); 
+    background: white; border: 2.5px solid #E0D8CE; 
+    border-bottom: 5px solid #C8C0B6;
+    display: flex; align-items: center; justify-content: center; 
+    cursor: pointer; transition: all 0.1s; 
+    color: var(--text);
+  }
+  .back-btn:active { transform: translateY(3px); border-bottom-width: 2px; }
+
+  .mode-user-badge { display: flex; align-items: center; gap: 10px; background: white; border-radius: 50px; padding: 6px 16px 6px 10px; box-shadow: var(--shadow-sm); border: 2px solid #F0E8DE; }
+  .mode-user-avatar { width: 32px; height: 32px; border-radius: 50%; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+  .mode-user-name { font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 700; }
+  .mode-title { text-align: center; margin: 20px 0 16px; }
+  .mode-title h2 { font-size: 28px; font-weight: 800; }
+  .mode-title p { font-size: 15px; color: var(--text-soft); margin-top: 4px; font-weight: 600; }
+  .modes-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  
+  .mode-card { background: white; border-radius: var(--radius); padding: 16px 10px; cursor: pointer; border: 3px solid transparent; box-shadow: 0 4px 0 rgba(0,0,0,0.08), 0 2px 12px rgba(0,0,0,0.06); transition: all 0.15s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .mode-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.12), 0 4px 0 rgba(0,0,0,0.08); }
+  .mode-card.red { border-color: #FFD5D5; }
+  .mode-card.blue { border-color: #D5E5FF; }
+  .mode-card.green { border-color: #D5F0D8; }
+  .mode-card.orange { border-color: #FFE6CC; }
+  .mode-card.purple { border-color: #EDD5FF; }
+  .mode-icon { font-size: 38px; margin-bottom: 4px; line-height: 1; }
+  .mode-card h3 { font-size: 16px; font-weight: 800; margin-bottom: 2px; }
+  .mode-card p { font-size: 11px; color: var(--text-soft); font-weight: 600; line-height: 1.3; }
+
+  /* ===== HISTORY TABLE WORK ===== */
+  .history-section h3 { font-size: 20px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+  .history-table-wrapper { background: white; border-radius: var(--radius-sm); border: 2px solid #F0E8DE; overflow: hidden; }
+  .history-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+  .history-table th { background: #FDF6EE; padding: 12px; font-weight: 700; color: var(--text-soft); border-bottom: 2px solid #F0E8DE; }
+  .history-table td { padding: 12px; border-bottom: 1.5px solid #F5EDE5; font-weight: 600; }
+  .no-history { padding: 20px; text-align: center; color: var(--text-soft); font-style: italic; }
+
+  /* ===== SCREEN: FIXED COUNTDOWN OVERLAY ===== */
+  #screen-countdown { 
+    position: fixed; inset: 0; background: radial-gradient(circle, #3a3d52 0%, #1e202c 100%); 
+    color: white; z-index: 500; display: none; align-items: center; justify-content: center; 
+  }
+  #screen-countdown.active { display: flex; }
+  .countdown-container { text-align: center; width: 300px; height: 300px; display: flex; align-items: center; justify-content: center; }
+  .countdown-num { 
+    font-family: 'Baloo 2', cursive; font-size: 140px; font-weight: 800; 
+    color: var(--yellow); text-shadow: 0 10px 0 var(--orange-dark); 
+    line-height: 1; margin: 0; padding: 0;
+    animation: pulse-pop 0.95s infinite linear; 
+  }
+  @keyframes pulse-pop { 
+    0% { transform: scale(0.5); opacity: 0; } 
+    40% { opacity: 1; }
+    80% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1.2); opacity: 0; } 
+  }
+
+  /* ===== SCREEN 3: QUIZ (THAY ĐỔI TOÀN BỘ KHUNG LAYOUT CHO CAO LÊN) ===== */
+  #screen-quiz { background: linear-gradient(160deg, #FFF5E6 0%, #FFF0F8 60%, #EFF5FF 100%); }
+  .quiz-header { position: relative; z-index: 1; display: flex; align-items: center; gap: 12px; padding-top: 10px }
+  
+  .progress-bar-wrap { 
+    vertical-align: middle; flex: 1; height: 16px; display: flex; gap: 4px;
+    background: transparent; border-radius: 0; overflow: visible; 
+  }
+  .progress-segment {
+    flex: 1; height: 100%; background: #FFE5E5; border-radius: 4px;
+    transition: all 0.2s ease; cursor: pointer;
+  }
+  .progress-segment.done { background: #6BCB77; box-shadow: 0 1px 0px rgba(0,0,0,0.06); }
+  .progress-segment.current { background: #4D96FF; transform: scaleY(1.2); box-shadow: 0 0 0 2px white, 0 0 0 3px var(--blue-dark); }
+
+  .question-counter { font-family: 'Baloo 2', cursive; font-size: 15px; font-weight: 700; color: var(--text-soft); white-space: nowrap; min-width: 55px; text-align: right; }
+  .timer-section { text-align: center; padding-top: 10px; position: relative; z-index: 1; }
+  .timer-display { font-family: 'Baloo 2', cursive; font-size: 18px; font-weight: 700; color: var(--text-soft); display: flex; align-items: center; justify-content: center; gap: 16px; }
+  .timer-num { font-size: 26px; color: var(--text); }
+
+  /* Khung trung tâm đẩy cao toàn cục diện bài thi */
+  .quiz-main-wrapper {
+    flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+    gap: 10px; /* Thêm khoảng trống padding đáy cực lớn để đẩy cụm số lên cao */
+    position: relative; z-index: 1; width: 100%;
+  }
+
+  .question-area { display: flex; flex-direction: column; align-items: center; width: 100%; gap: 10px }
+  .question-card { background: white; border-radius: 32px; padding: 24px 40px; text-align: center; box-shadow: 0 8px 0 rgba(0,0,0,0.08), 0 2px 20px rgba(0,0,0,0.06); border: 3px solid #F0E8DE; width: 100%; max-width: 480px; position: relative; }
+  .question-text { font-family: 'Baloo 2', cursive; font-size: 58px; font-weight: 800; color: var(--text); line-height: 1.1; margin-bottom: 14px; letter-spacing: 1px; }
+  
+  .answer-input-wrap { display: flex; align-items: center; justify-content: center; width: 100%; }
+  .answer-input { 
+    width: 180px; height: 68px; font-family: 'Baloo 2', cursive; font-size: 38px; font-weight: 800; 
+    text-align: center; border-radius: 16px; border: 3px solid #E0D8CE; outline: none; 
+    transition: all 0.15s; color: var(--text); background: #FAFAFA; border-bottom-width: 5px; 
+    caret-color: transparent; 
+  }
+  .answer-input:focus { border-color: var(--blue); background: var(--blue-light); }
+  .answer-input.saved { border-color: var(--purple); background: #F6EEFF; border-bottom-color: var(--purple-dark); }
+
+  .quiz-navigation-panel { display: flex; justify-content: space-between; gap: 10px; width: 100%; max-width: 480px; padding: 10px; }
+  .nav-arrow-btn { 
+    flex: 1; padding: 12px; font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 700; 
+    border-radius: 12px; cursor: pointer; border: none; transition: all 0.12s; 
+    background: white; border: 2px solid #E0D8CE; color: var(--text); box-shadow: 0 4px 0 #D0C8BE; 
+  }
+  .nav-arrow-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #D0C8BE; }
+  .nav-arrow-btn:disabled { 
+    opacity: 0.3 !important; cursor: not-allowed !important; transform: none !important; 
+    box-shadow: none !important; background: #F0E8DE !important; border-color: #E0D8CE !important; 
+  }
+
+  /* Bàn phím số Numpad ảo */
+  .numpad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; max-width: 300px; width: 100%; }
+  .numpad-btn { font-family: 'Baloo 2', cursive; font-size: 22px; font-weight: 800; padding: 10px; background: white; border: 3px solid #E8DDD4; border-bottom: 5px solid #D0C8BE; border-radius: 14px; cursor: pointer; transition: all 0.1s; color: var(--text); }
+  .numpad-btn:hover:not(:disabled) { background: var(--yellow-light); }
+  .numpad-btn:active:not(:disabled) { transform: translateY(3px); border-bottom-width: 2px; }
+  .numpad-btn.del { background: var(--red-light); color: var(--red-dark); border-color: #FFBABA; border-bottom-color: #FF9898; }
+  .numpad-btn.ok { background: var(--blue); color: white; border-color: var(--blue-dark); border-bottom-color: #2974DF; }
+  .numpad-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none !important; box-shadow: none !important; border-bottom-width: 5px !important; }
+
+  /* Nút nộp bài LUÔN HIỆN dưới cụm phím số ảo, cấu hình đẩy cao */
+  .quiz-bottom-submit-container { max-width: 300px; width: 100%; margin: 0 auto; display: block; }
+  .btn-bottom-finish { width: 100%; padding: 14px; font-size: 18px; border-radius: 16px; text-transform: uppercase; }
+
+  /* ===== SCREEN 4: RESULTS ===== */
+  #screen-results { background: linear-gradient(160deg, #FFFBE5 0%, #FFF5E6 50%, #E5F9E7 100%); }
+  .results-header { text-align: center; padding: 30px 20px 10px; }
+  .trophy { font-size: 70px; }
+  .results-title { font-size: 32px; font-weight: 800; margin: 8px 0 4px; }
+  .results-subtitle { font-size: 16px; color: var(--text-soft); font-weight: 600; }
+  .stars-earned { display: flex; justify-content: center; gap: 8px; margin: 12px 0; }
+  .star-earned { font-size: 32px; opacity: 0; animation: star-pop 0.4s ease forwards; }
+  @keyframes star-pop { from { opacity:0; transform: scale(0); } to { opacity:1; transform: scale(1); } }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 16px 0; }
+  .stat-card { background: white; border-radius: 20px; padding: 16px; text-align: center; border: 2px solid #F0E8DE; }
+  .stat-value { font-family: 'Baloo 2', cursive; font-size: 28px; font-weight: 800; }
+  .stat-label { font-size: 12px; color: var(--text-soft); font-weight: 600; }
+
+  .detail-list { background: white; border-radius: 20px; border: 2px solid #F0E8DE; overflow: hidden; margin-bottom: 16px; max-height: 200px; overflow-y: auto; }
+  .detail-item { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1.5px solid #F5EDE5; font-weight: 600; font-size: 14px; }
+  .detail-num { font-size: 11px; color: var(--text-soft); min-width: 20px; font-weight: 700; }
+  .detail-eq { flex: 1; font-family: 'Baloo 2', cursive; font-size: 16px; font-weight: 700; }
+  .detail-status { font-size: 18px; }
+  .results-actions { display: flex; flex-direction: column; gap: 8px; }
+
+  /* ===== SYSTEM MODALS & FIXED SCROLLING ===== */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 100; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  
+  .modal { 
+    background: white; border-radius: var(--radius); padding: 28px; width: 100%; max-width: 460px; 
+    max-height: 85vh; display: flex; flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2); border: 3px solid #F0E8DE; text-align: center; 
+    overflow: hidden; 
+  }
+  .modal h3 { font-size: 24px; margin-bottom: 16px; text-align: center; font-family: 'Baloo 2', cursive; color: var(--text); flex-shrink: 0; }
+  .modal p { font-size: 16px; font-weight: 600; color: var(--text-soft); margin-bottom: 18px; line-height: 1.5; flex-shrink: 0; }
+  
+  .modal-scroll-content { flex: 1; overflow-y: auto; padding-right: 6px; text-align: left; margin-bottom: 8px; }
+  .modal-scroll-content::-webkit-scrollbar { width: 6px; }
+  .modal-scroll-content::-webkit-scrollbar-track { background: #F5F0EC; border-radius: 10px; }
+  .modal-scroll-content::-webkit-scrollbar-thumb { background: #C8C0B6; border-radius: 10px; }
+
+  .input-group { margin-bottom: 16px; width: 100%; text-align: left; position: relative; }
+  .input-group label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; color: var(--text-soft); }
+  
+  .input-group input[type="text"], 
+  .input-group input[type="number"], 
+  .input-group select {
+    width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+    border: 2.5px solid #E0D8CE; border-bottom-width: 5px;
+    font-family: 'Nunito', sans-serif; font-size: 16px; font-weight: 600; 
+    outline: none; transition: border-color 0.15s;
+    background: #FFFFFF; color: var(--text);
+    appearance: none; -webkit-appearance: none; -moz-appearance: none; 
+  }
+  .input-group input:focus, .input-group select:focus { border-color: var(--blue); background: var(--blue-light); }
+
+  .select-wrapper { position: relative; width: 100%; }
+  .select-wrapper::after {
+    content: ""; position: absolute; right: 20px; top: 50%;
+    transform: translateY(-50%); width: 0; height: 0;
+    border-left: 6px solid transparent; border-right: 6px solid transparent;
+    border-top: 7px solid var(--text-soft); pointer-events: none;
+  }
+
+  .file-upload-container { width: 100%; position: relative; }
+  .file-upload-input { position: absolute; left: 0; top: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 2; }
+  .file-upload-button {
+    width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+    border: 2.5px solid #C8C0B6; border-bottom-width: 5px; background: #F5F0EC;
+    color: var(--text); font-weight: 700; font-size: 15px; text-align: center;
+    display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.1s;
+  }
+
+  .avatar-picker { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+  .avatar-opt { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; cursor: pointer; border: 3px solid transparent; transition: all 0.12s; background: #F5F0EC; }
+  .avatar-opt.selected { border-color: var(--blue); box-shadow: 0 0 0 3px var(--blue-light); }
+
+  .color-picker { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; }
+  .color-opt { width: 28px; height: 28px; border-radius: 50%; cursor: pointer; border: 3px solid transparent; transition: all 0.12s; }
+  .color-opt.selected { border-color: var(--text); box-shadow: 0 0 0 2px white inset; }
+
+  .checkbox-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; background: #FFFBF5; padding: 12px; border-radius: var(--radius-sm); border: 2px dashed #E0D8CE; margin-bottom: 14px; }
+  .checkbox-item { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; cursor: pointer; color: var(--text); }
+  .checkbox-item input { width: 18px; height: 18px; cursor: pointer; }
+  .checkbox-item .op-icon { font-size: 18px; line-height: 1; display: inline-block; width: 20px; text-align: center; }
+  
+  .select-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 8px; flex-shrink: 0; width: 100%; }
+  .modal-actions .btn { flex: 1; text-align: center; font-size: 16px; padding: 12px 10px; }
+</style>
+</head>
+<body>
+
+<div class="bg-shapes">
+  <div class="shape"></div><div class="shape"></div>
+  <div class="shape"></div><div class="shape"></div><div class="shape"></div>
+</div>
+
+<div id="screen-home" class="screen active">
+  <div class="container">
+    <div class="home-header">
+      <div class="home-logo">⭐ Toán Vui</div>
+      <div class="star-row"><span class="star">🌟</span><span class="star">✨</span><span class="star">🌟</span></div>
+      <div class="home-tagline">Học toán thật vui — chấm điểm tập trung!</div>
+    </div>
+    <div class="profile-section">
+      <h2>Chọn hồ sơ của bạn</h2>
+      <div class="profiles-grid" id="profiles-grid"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-countdown">
+  <div class="countdown-container">
+    <div class="countdown-num" id="countdown-number">3</div>
+  </div>
+</div>
+
+<div id="screen-mode" class="screen">
+  <div class="mode-header">
+    <div class="header-left">
+      <div class="back-btn" onclick="showScreen('home')">←</div>
+      <div class="mode-user-badge">
+        <div class="mode-user-avatar" id="mode-avatar"></div>
+        <div class="mode-user-name" id="mode-name"></div>
+      </div>
+    </div>
+    <button class="btn btn-outline" style="padding: 8px 14px;" onclick="openSettings()">⚙️ Cài đặt</button>
+  </div>
+  
+  <div class="container">
+    <div class="mode-title">
+      <h2>Chọn nội dung thi đấu 🎮</h2>
+      <p id="mode-settings-summary">Độ khó: 2 Chữ số · Số câu: 20 câu</p>
+    </div>
+    
+    <div class="modes-grid">
+      <div class="mode-card red" onclick="startCountdown('add')">
+        <div class="mode-icon">➕</div>
+        <h3>Phép Cộng</h3>
+        <p>Cộng các chữ số</p>
+      </div>
+      <div class="mode-card blue" onclick="startCountdown('sub')">
+        <div class="mode-icon">➖</div>
+        <h3>Phép Trừ</h3>
+        <p>Trừ dải số cấu hình</p>
+      </div>
+      <div class="mode-card green" onclick="startCountdown('mul')">
+        <div class="mode-icon">✖️</div>
+        <h3>Phép Nhân</h3>
+        <p>Bảng cửu chương Pro</p>
+      </div>
+      <div class="mode-card orange" onclick="startCountdown('div')">
+        <div class="mode-icon">➗</div>
+        <h3>Phép Chia</h3>
+        <p>Chia hết không dư</p>
+      </div>
+      <div class="mode-card purple" onclick="startCountdown('mix')">
+        <div class="mode-icon">🎲</div>
+        <h3>Hỗn Hợp</h3>
+        <p>Tính toán tổng hợp</p>
+      </div>
+    </div>
+
+    <div class="history-section">
+      <h3>
+        <span>📊 Tỷ lệ chính xác theo ngày</span>
+        <button class="btn btn-outline" style="font-size:12px; padding:6px 12px;" onclick="exportHistoryCSV()">📥 Xuất CSV</button>
+      </h3>
+      <div class="history-table-wrapper" id="history-wrapper"></div>
+    </div>
+  </div>
+</div>
+
+<div id="screen-quiz" class="screen">
+  <div class="quiz-header">
+    <div class="back-btn" onclick="confirmExit()">←</div>
+    <div class="progress-bar-wrap" id="progress-bar-segments"></div>
+    <div class="question-counter" id="question-counter">1/20</div>
+  </div>
+
+  <div class="timer-section">
+    <div class="timer-display">
+      <div class="timer-item">
+        <div class="timer-num" id="timer-total">0:00</div>
+        <div class="timer-label">Tổng thời gian thi đấu</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="quiz-main-wrapper">
+    <div class="question-area">
+      <div class="question-card" id="question-card">
+        <div class="question-text" id="question-text">5 + 3 =</div>
+        <div class="answer-input-wrap">
+          <input class="answer-input" id="answer-input" type="text" inputmode="numeric" placeholder="?" autocomplete="off" oninput="validateInputState()">
+        </div>
+      </div>
+
+      <div class="quiz-navigation-panel">
+        <button class="nav-arrow-btn" id="nav-btn-prev" onclick="navigateQuestion(-1)">◀ Câu trước</button>
+        <button class="nav-arrow-btn" id="nav-btn-next" onclick="navigateQuestion(1)">Câu tiếp theo ▶</button>
+      </div>
+    </div>
+
+    <div class="numpad">
+      <button class="numpad-btn" onclick="numpadPress(7)">7</button>
+      <button class="numpad-btn" onclick="numpadPress(8)">8</button>
+      <button class="numpad-btn" onclick="numpadPress(9)">9</button>
+      <button class="numpad-btn" onclick="numpadPress(4)">4</button>
+      <button class="numpad-btn" onclick="numpadPress(5)">5</button>
+      <button class="numpad-btn" onclick="numpadPress(6)">6</button>
+      <button class="numpad-btn" onclick="numpadPress(1)">1</button>
+      <button class="numpad-btn" onclick="numpadPress(2)">2</button>
+      <button class="numpad-btn" onclick="numpadPress(3)">3</button>
+      <button class="numpad-btn del" id="numpad-btn-del" onclick="numpadDel()">⌫</button>
+      <button class="numpad-btn" onclick="numpadPress(0)">0</button>
+      <button class="numpad-btn ok" id="numpad-btn-save" onclick="saveCurrentAnswer()">Lưu ✓</button>
+    </div>
+
+    <div class="quiz-bottom-submit-container">
+      <button class="btn btn-green btn-bottom-finish" id="quiz-bottom-submit-btn" onclick="openConfirmModal()">Nộp bài & Chấm Điểm 🏁</button>
+    </div>
+  </div>
+</div>
+
+<div id="screen-results" class="screen">
+  <div class="container">
+    <div class="results-header">
+      <div class="trophy" id="result-trophy">🏆</div>
+      <div class="results-title" id="result-title">Kết quả tổng hợp</div>
+      <div class="results-subtitle" id="result-subtitle">Hội đồng đã chấm điểm bài làm của bạn</div>
+      <div class="stars-earned" id="stars-earned"></div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="stat-correct" style="color:var(--green-dark)">0</div>
+        <div class="stat-label">Số câu đúng</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="stat-total-time">0:00</div>
+        <div class="stat-label">Tổng thời gian làm</div>
+      </div>
+    </div>
+
+    <div class="detail-list" id="detail-list"></div>
+
+    <div class="results-actions">
+      <button class="btn btn-yellow" onclick="startCountdown(currentMode)" style="font-size:18px;padding:16px">🔄 Thi đấu lại bài này</button>
+      <button class="btn btn-outline" onclick="showScreen('mode')">← Chọn bài khác</button>
+      <button class="btn btn-outline" onclick="showScreen('home')">🏠 Trang chủ</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Tạo hồ sơ mới 🎨</h3>
+    <div class="modal-scroll-content">
+      <div class="input-group"><label>Tên của bạn</label><input type="text" id="profile-name-input" placeholder="Ví dụ: Minh Anh" maxlength="15"></div>
+      <div class="input-group"><label>Chọn nhân vật</label><div class="avatar-picker" id="avatar-picker"></div></div>
+      <div class="input-group"><label>Màu sắc</label><div class="color-picker" id="color-picker"></div></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()"><span style="color:var(--red)">❌</span> Hủy</button>
+      <button class="btn btn-green" onclick="saveProfile()">Tạo hồ sơ ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settings-modal-overlay">
+  <div class="modal">
+    <h3>Cài đặt cấu hình nâng cao ⚙️</h3>
+    <div class="modal-scroll-content">
+      <div class="input-group">
+        <label>Số lượng câu hỏi trong một bài</label>
+        <div class="select-wrapper">
+          <select id="setting-questions-count" onchange="toggleCustomQuestions()">
+            <option value="10">10 Câu</option>
+            <option value="20">20 Câu</option>
+            <option value="30">30 Câu</option>
+            <option value="custom">Tùy chọn tự điền...</option>
+          </select>
+        </div>
+      </div>
+      <div id="custom-q-count-group" class="input-group" style="display:none;">
+        <label>Số câu tùy chọn</label>
+        <input type="number" id="setting-questions-custom" value="20" min="1" max="100">
+      </div>
+      <div class="input-group">
+        <label>Độ khó cơ bản (Số chữ số)</label>
+        <div class="select-wrapper">
+          <select id="setting-difficulty" onchange="toggleCustomDifficulty()">
+            <option value="2">2 Chữ số (10 - 99)</option>
+            <option value="3">3 Chữ số (100 - 999)</option>
+            <option value="4">4 Chữ số (1000 - 9999)</option>
+            <option value="custom">Tùy chọn tự điền dải số...</option>
+          </select>
+        </div>
+      </div>
+      <div id="custom-diff-group" class="select-row" style="display:none; margin-bottom: 14px;">
+        <div class="input-group"><label>Số nhỏ nhất</label><input type="number" id="setting-diff-min" value="10"></div>
+        <div class="input-group"><label>Số lớn nhất</label><input type="number" id="setting-diff-max" value="99"></div>
+      </div>
+      <div class="input-group">
+        <label>Tùy biến phép tính khi chọn "Hỗn Hợp"</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" id="mix-allow-add" checked> <span class="op-icon">➕</span> Cộng</label>
+          <label class="checkbox-item"><input type="checkbox" id="mix-allow-sub" checked> <span class="op-icon">➖</span> Trừ</label>
+          <label class="checkbox-item"><input type="checkbox" id="mix-allow-mul" checked> <span class="op-icon">✖️</span> Nhân</label>
+          <label class="checkbox-item"><input type="checkbox" id="mix-allow-div" checked> <span class="op-icon">➗</span> Chia</label>
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Thời gian đếm ngược trước trận</label>
+        <div class="select-wrapper">
+          <select id="setting-countdown" onchange="toggleCustomCountdown()">
+            <option value="3">3 Giây</option>
+            <option value="5">5 Giây</option>
+            <option value="10">10 Giây</option>
+            <option value="15">15 Giây</option>
+            <option value="custom">Tùy chọn tự điền...</option>
+          </select>
+        </div>
+      </div>
+      <div id="custom-countdown-group" class="input-group" style="display:none;">
+        <label>Số giây tùy chọn</label>
+        <input type="number" id="setting-countdown-custom" value="3" min="1" max="60">
+      </div>
+      <div class="input-group">
+        <label>Khôi phục dữ liệu lịch sử bài làm</label>
+        <div class="file-upload-container">
+          <input type="file" id="csv-file-input" class="file-upload-input" accept=".csv">
+          <div class="file-upload-button" id="file-upload-label-text">📂 Chọn file dữ liệu CSV...</div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeSettingsModal()"><span style="color:var(--red)">❌</span> Hủy</button>
+      <button class="btn btn-blue" onclick="saveSettings()">Lưu cấu hình ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirm-submit-modal-overlay">
+  <div class="modal">
+    <h3>Nộp bài thi đấu? 🏁</h3>
+    <p id="confirm-modal-text">Bạn có chắc chắn muốn nộp bài thi để hội đồng tiến hành chấm điểm không?</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeConfirmModal()"><span style="color:var(--red)">❌</span> Hủy</button>
+      <button class="btn btn-green" onclick="confirmSubmitAction()">Nộp bài ✓</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirm-exit-modal-overlay">
+  <div class="modal">
+    <h3>Hủy trận đấu? ⚠️</h3>
+    <p>Bạn muốn thoát ra ngoài? Toàn bộ kết quả chưa nộp của trận thi đấu này sẽ bị hủy bỏ hoàn toàn!</p>
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeExitModal()"><span style="color:var(--red)">❌</span> Ở lại</button>
+      <button class="btn btn-red" onclick="confirmExitAction()">Thoát ra ngoài ◀</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const AVATARS = ['🐼','🦊','🐸','🐯','🦁','🐮','🐷','🐨','🐻','🦄','🐙','🦋','🐱','🐶','🐹'];
+const COLORS = ['#FF6B6B','#FFD93D','#6BCB77','#4D96FF','#C77DFF','#FF9F1C'];
+
+let profiles = JSON.parse(localStorage.getItem('toanyui_profiles_v3') || '[]');
+let currentProfile = localStorage.getItem('toanvui_last_profile_v3') !== null ? parseInt(localStorage.getItem('toanvui_last_profile_v3')) : null;
+let currentMode = 'add';
+
+let appSettings = {
+  difficulty: '2', diffMin: 10, diffMax: 99,
+  countdown: '3', countdownCustom: 3,
+  qCountMode: '20', qCountCustom: 20,
+  mixOps: ['add', 'sub', 'mul', 'div']
+};
+
+let questions = [];
+let currentQIndex = 0;       
+let maxReachedQIndex = 0;    
+let userAnswers = [];        
+let setStartTime = 0;
+let totalTimerInterval = null;
+
+function getTotalQuestionsConfig() {
+  if (appSettings.qCountMode === 'custom') return parseInt(appSettings.qCountCustom) || 20;
+  return parseInt(appSettings.qCountMode) || 20;
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  if(name !== 'countdown') {
+    document.getElementById('screen-' + name).classList.add('active');
+  }
+  window.scrollTo(0, 0);
+  if(name === 'mode' && currentProfile !== null) {
+    renderHistoryTable();
+    updateModeHeaderSummary();
+  }
+}
+
+function renderProfiles() {
+  const grid = document.getElementById('profiles-grid');
+  grid.innerHTML = '';
+  profiles.forEach((p, i) => {
+    const sessions = p.sessions || [];
+    const totalGames = sessions.length;
+    let totalCorrect = 0, totalQuestions = 0;
+    sessions.forEach(s => { totalCorrect += s.correct; totalQuestions += s.totalQ; });
+    const avgScore = totalQuestions > 0 ? Math.round((totalCorrect / totalQuestions) * 100) : 0;
+
+    const card = document.createElement('div');
+    card.className = 'profile-card';
+    card.style.borderColor = p.color + '55';
+    card.innerHTML = `
+      <div class="profile-avatar" style="background:${p.color}22">${p.avatar}</div>
+      <div class="profile-name">${p.name}</div>
+      <div class="profile-stats">${totalGames > 0 ? `${totalGames} trận · Đúng ĐT ${avgScore}%` : 'Chưa chơi'}</div>
+    `;
+    card.onclick = () => selectProfile(i);
+    grid.appendChild(card);
+  });
+  
+  const addCard = document.createElement('div');
+  addCard.className = 'add-profile-card';
+  addCard.innerHTML = '<div class="add-icon">➕</div><div class="add-text">Thêm hồ sơ</div>';
+  addCard.onclick = openAddProfile;
+  grid.appendChild(addCard);
+}
+
+function selectProfile(i) {
+  if (i >= profiles.length) return;
+  currentProfile = i;
+  localStorage.setItem('toanvui_last_profile_v3', i);
+  const p = profiles[i];
+  document.getElementById('mode-avatar').textContent = p.avatar;
+  document.getElementById('mode-avatar').style.background = p.color + '33';
+  document.getElementById('mode-name').textContent = p.name;
+  
+  if (p.settings) {
+    appSettings = { ...p.settings };
+    if (!appSettings.qCountMode) { appSettings.qCountMode = '20'; appSettings.qCountCustom = 20; }
+  } else {
+    appSettings = { difficulty: '2', diffMin: 10, diffMax: 99, countdown: '3', countdownCustom: 3, qCountMode: '20', qCountCustom: 20, mixOps: ['add', 'sub', 'mul', 'div'] };
+  }
+  
+  showScreen('mode');
+}
+
+let selectedAvatar = 0, selectedColor = 0;
+function openAddProfile() {
+  selectedAvatar = 0; selectedColor = 0;
+  document.getElementById('profile-name-input').value = '';
+  document.getElementById('avatar-picker').innerHTML = AVATARS.map((a, i) => `<div class="avatar-opt${i===0?' selected':''}" onclick="pickAvatar(${i})">${a}</div>`).join('');
+  document.getElementById('color-picker').innerHTML = COLORS.map((c, i) => `<div class="color-opt${i===0?' selected':''}" style="background:${c}" onclick="pickColor(${i})"></div>`).join('');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function pickAvatar(i) { selectedAvatar = i; document.querySelectorAll('.avatar-opt').forEach((el, j) => el.classList.toggle('selected', j===i)); }
+function pickColor(i) { selectedColor = i; document.querySelectorAll('.color-opt').forEach((el, j) => el.classList.toggle('selected', j===i)); }
+function closeModal() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+function saveProfile() {
+  const name = document.getElementById('profile-name-input').value.trim();
+  if (!name) return;
+  profiles.push({ name, avatar: AVATARS[selectedAvatar], color: COLORS[selectedColor], sessions: [], settings: { difficulty: '2', diffMin: 10, diffMax: 99, countdown: '3', countdownCustom: 3, qCountMode: '20', qCountCustom: 20, mixOps: ['add', 'sub', 'mul', 'div'] } });
+  localStorage.setItem('toanyui_profiles_v3', JSON.stringify(profiles));
+  closeModal();
+  renderProfiles();
+}
+
+function startCountdown(mode) {
+  currentMode = mode;
+  let secs = appSettings.countdown === 'custom' ? parseInt(appSettings.countdownCustom) : parseInt(appSettings.countdown);
+  if (isNaN(secs) || secs <= 0) secs = 3;
+  
+  const el = document.getElementById('screen-countdown');
+  const cdNum = document.getElementById('countdown-number');
+  
+  cdNum.textContent = secs;
+  el.classList.add('active'); 
+  
+  let cdInterval = setInterval(() => {
+    secs--;
+    if (secs <= 0) { 
+      clearInterval(cdInterval); 
+      el.classList.remove('active'); 
+      startQuiz(currentMode); 
+    } else {
+      cdNum.textContent = secs;
+    }
+  }, 950);
+}
+
+function generateQuestion(mode) {
+  let a, b, op, answer;
+  let actualMode = mode;
+  
+  if (mode === 'mix') {
+    const allowed = appSettings.mixOps && appSettings.mixOps.length > 0 ? appSettings.mixOps : ['add', 'sub', 'mul', 'div'];
+    actualMode = allowed[Math.floor(Math.random() * allowed.length)];
+  }
+  
+  let min = parseInt(appSettings.diffMin) || 10;
+  let max = parseInt(appSettings.diffMax) || 99;
+
+  if (actualMode === 'add') {
+    a = Math.floor(Math.random() * (max - min + 1)) + min;
+    b = Math.floor(Math.random() * (max - min + 1)) + min;
+    op = '+'; answer = a + b;
+  } else if (actualMode === 'sub') {
+    let n1 = Math.floor(Math.random() * (max - min + 1)) + min;
+    let n2 = Math.floor(Math.random() * (max - min + 1)) + min;
+    a = Math.max(n1, n2); b = Math.min(n1, n2);
+    op = '−'; answer = a - b;
+  } else if (actualMode === 'mul') {
+    if (max > 100) {
+      a = Math.floor(Math.random() * 8) + 2; 
+      b = Math.floor(Math.random() * (Math.round(max/10) - min + 1)) + min;
+    } else {
+      a = Math.floor(Math.random() * (max - min + 1)) + min;
+      b = Math.floor(Math.random() * 8) + 2;
+    }
+    op = '×'; answer = a * b;
+  } else { 
+    let tempB = Math.floor(Math.random() * 8) + 2; 
+    let tempAns = Math.floor(Math.random() * (Math.round(max/2) - min + 1)) + min; 
+    a = tempAns * tempB; b = tempB; op = '÷'; answer = tempAns;
+  }
+  return { display: `${a} ${op} ${b}`, answer };
+}
+
+function startQuiz(mode) {
+  const totalQ = getTotalQuestionsConfig();
+  questions = Array.from({length: totalQ}, () => generateQuestion(mode));
+  currentQIndex = 0;
+  maxReachedQIndex = 0;
+  userAnswers = Array(totalQ).fill(""); 
+  
+  const pBar = document.getElementById('progress-bar-segments');
+  pBar.innerHTML = Array.from({length: totalQ}, (_, i) => 
+    `<div class="progress-segment" onclick="navigateDirectTo(${i})"></div>`
+  ).join('');
+
+  showScreen('quiz');
+  loadQuestion(0);
+
+  setStartTime = Date.now();
+  clearInterval(totalTimerInterval);
+  totalTimerInterval = setInterval(() => {
+    const elapsed = (Date.now() - setStartTime) / 1000;
+    const m = Math.floor(elapsed / 60); const s = Math.floor(elapsed % 60);
+    document.getElementById('timer-total').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  }, 1000);
+}
+
+function loadQuestion(index) {
+  currentQIndex = index;
+  if(index > maxReachedQIndex) maxReachedQIndex = index; 
+
+  const totalQ = getTotalQuestionsConfig();
+  const q = questions[index];
+  
+  document.getElementById('question-text').textContent = `${q.display} =`;
+  document.getElementById('question-counter').textContent = `${index + 1}/${totalQ}`;
+
+  const segments = document.querySelectorAll('.progress-segment');
+  segments.forEach((seg, i) => {
+    seg.className = 'progress-segment';
+    if (i === index) {
+      seg.classList.add('current'); 
+    } else if (userAnswers[i] !== "") {
+      seg.classList.add('done'); 
+    }
+  });
+
+  const inp = document.getElementById('answer-input');
+  inp.value = userAnswers[index]; 
+  
+  if (userAnswers[index] !== "") inp.classList.add('saved');
+  else inp.classList.remove('saved');
+
+  document.getElementById('nav-btn-prev').disabled = (index === 0);
+  document.getElementById('nav-btn-next').disabled = (index === totalQ - 1);
+
+  validateInputState(); 
+  setTimeout(() => inp.focus(), 50);
+}
+
+function navigateDirectTo(targetIndex) {
+  const totalQ = getTotalQuestionsConfig();
+  if (targetIndex >= 0 && targetIndex < totalQ) {
+    loadQuestion(targetIndex);
+  }
+}
+
+// LOGIC KIỂM TRA ĐÁP ÁN ĐỂ DISABLE CÁC NÚT TƯƠNG ỨNG
+function validateInputState() {
+  const inp = document.getElementById('answer-input');
+  const val = inp.value.trim();
+  
+  const saveBtn = document.getElementById('numpad-btn-save');
+  const delBtn = document.getElementById('numpad-btn-del');
+  const bottomSubmitBtn = document.getElementById('quiz-bottom-submit-btn');
+
+  if (val === "") {
+    saveBtn.disabled = false;
+    delBtn.disabled = true;
+  } else {
+    saveBtn.disabled = false;
+    delBtn.disabled = false;
+  }
+
+  // SỬA LỖI: Nút nộp bài LUÔN HIỆN, chỉ cho CLICK khi 100% tất cả các câu đã được điền dữ liệu
+  const blankAnswersCount = userAnswers.filter(ans => ans === "").length;
+  if (blankAnswersCount > 0) {
+    bottomSubmitBtn.disabled = true;
+  } else {
+    bottomSubmitBtn.disabled = false;
+  }
+}
+
+function numpadPress(n) {
+  const inp = document.getElementById('answer-input');
+  if (inp.value.length < 7) inp.value += n;
+  validateInputState();
+}
+
+function numpadDel() {
+  const inp = document.getElementById('answer-input');
+  inp.value = "";
+  userAnswers[currentQIndex] = ""; 
+  inp.classList.remove('saved');
+  
+  validateInputState();
+  
+  const segments = document.querySelectorAll('.progress-segment');
+  if (segments[currentQIndex]) {
+    segments[currentQIndex].className = 'progress-segment current';
+  }
+}
+
+function saveCurrentAnswer() {
+  const totalQ = getTotalQuestionsConfig();
+  const inp = document.getElementById('answer-input');
+  const val = inp.value.trim();
+  if (val === "") return;
+
+  userAnswers[currentQIndex] = parseInt(val);
+  inp.classList.add('saved');
+
+  loadQuestion(currentQIndex);
+
+  // Nút Lưu tuyệt đối KHÔNG tự động bật Pop-up lên nữa
+  if (currentQIndex < totalQ - 1) {
+    navigateQuestion(1);
+  }
+}
+
+function navigateQuestion(direction) {
+  const totalQ = getTotalQuestionsConfig();
+  let targetIndex = currentQIndex + direction;
+
+  if (targetIndex >= 0 && targetIndex < totalQ) {
+    loadQuestion(targetIndex);
+  }
+}
+
+function openConfirmModal() {
+  // Chỉ mở Pop-up khi bài thi đã được làm đầy đủ không còn câu trống
+  const blankAnswers = userAnswers.filter(ans => ans === "").length;
+  if (blankAnswers > 0) return; 
+
+  const modalText = document.getElementById('confirm-modal-text');
+  modalText.textContent = "Tuyệt vời! Bạn đã điền đầy đủ đáp án của tất cả các câu hỏi. Bạn có chắc chắn muốn nộp bài thi ngay không?";
+  
+  document.getElementById('confirm-submit-modal-overlay').classList.add('open');
+}
+
+function closeConfirmModal() { document.getElementById('confirm-submit-modal-overlay').classList.remove('open'); }
+function confirmSubmitAction() { closeConfirmModal(); processEvaluation(); }
+
+function processEvaluation() {
+  const totalQ = getTotalQuestionsConfig();
+  clearInterval(totalTimerInterval);
+  const totalTime = (Date.now() - setStartTime) / 1000;
+  
+  let correctCount = 0;
+  let detailsHtml = "";
+
+  questions.forEach((q, i) => {
+    const uAns = userAnswers[i];
+    const isCorrect = uAns === q.answer;
+    if (isCorrect) correctCount++;
+
+    detailsHtml += `
+      <div class="detail-item">
+        <div class="detail-num">${i + 1}</div>
+        <div class="detail-eq">${q.display} = ${uAns !== "" ? uAns : "?"} ${!isCorrect ? `<span style="color:var(--green-dark);font-size:14px">(${q.answer})</span>` : ''}</div>
+        <div class="detail-status">${isCorrect ? '✅' : '❌'}</div>
+      </div>
+    `;
+  });
+
+  const pct = correctCount / totalQ;
+  document.getElementById('result-trophy').textContent = pct >= 0.85 ? '🏆' : pct >= 0.6 ? '🥇' : '💪';
+  document.getElementById('result-title').textContent = pct === 1 ? "Hoàn Hảo 100 Điểm!" : "Đã Hoàn Thành!";
+  document.getElementById('result-subtitle').textContent = `Đúng ${correctCount} trên tổng số ${totalQ} câu hỏi`;
+  
+  const stars = pct >= 0.9 ? 3 : pct >= 0.7 ? 2 : pct >= 0.5 ? 1 : 0;
+  document.getElementById('stars-earned').innerHTML = Array.from({length:3}, (_,i) => `<div class="star-earned">${i < stars ? '⭐' : '☆'}</div>`).join('');
+
+  const m = Math.floor(totalTime / 60); const s = Math.floor(totalTime % 60);
+  document.getElementById('stat-correct').textContent = `${correctCount}/${totalQ}`;
+  document.getElementById('stat-total-time').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+  document.getElementById('detail-list').innerHTML = detailsHtml;
+
+  if (currentProfile !== null) {
+    const today = new Date().toLocaleDateString('vi-VN');
+    profiles[currentProfile].sessions = profiles[currentProfile].sessions || [];
+    profiles[currentProfile].sessions.push({
+      mode: currentMode, correct: correctCount, totalQ: totalQ,
+      totalTime: totalTime.toFixed(1), date: today
+    });
+    localStorage.setItem('toanyui_profiles_v3', JSON.stringify(profiles));
+  }
+
+  showScreen('results');
+}
+
+function getGroupedHistory() {
+  if (currentProfile === null) return [];
+  const sessions = profiles[currentProfile].sessions || [];
+  const groups = {};
+  
+  sessions.forEach(s => {
+    if (!groups[s.date]) groups[s.date] = { date: s.date, totalCorrect: 0, totalQuestions: 0, count: 0 };
+    groups[s.date].totalCorrect += s.correct;
+    groups[s.date].totalQuestions += s.totalQ;
+    groups[s.date].count += 1;
+  });
+
+  return Object.values(groups).map(g => {
+    return {
+      date: g.date, count: g.count, totalCorrect: g.totalCorrect, totalQuestions: g.totalQuestions,
+      avgRate: (g.totalQuestions > 0 ? Math.round((g.totalCorrect / g.totalQuestions) * 100) : 0) + '%'
+    };
+  }).reverse();
+}
+
+function renderHistoryTable() {
+  const wrapper = document.getElementById('history-wrapper');
+  const data = getGroupedHistory();
+  if (data.length === 0) { wrapper.innerHTML = `<div class="no-history">Chưa có dữ liệu.</div>`; return; }
+
+  let html = `<table class="history-table"><thead><tr><th>Ngày thi đấu</th><th>Số lượt làm</th><th>Tổng câu đúng</th><th>Tỷ lệ trung bình ngày</th></tr></thead><tbody>`;
+  data.forEach(row => {
+    html += `<tr><td>📅 ${row.date}</td><td>${row.count} trận</td><td>${row.totalCorrect}/${row.totalQuestions}</td><td><span class="mode-badge" style="background:var(--blue-light);color:var(--blue-dark);font-weight:700;padding:4px 8px;border-radius:10px;">${row.avgRate}</span></td></tr>`;
+  });
+  html += `</tbody></table>`;
+  wrapper.innerHTML = html;
+}
+
+function exportHistoryCSV() {
+  if (currentProfile === null || !profiles[currentProfile].sessions?.length) return;
+  let csv = "\uFEFFHồ sơ,Ngày,Phép tính,Số câu đúng,Tổng số câu,Thời gian tổng\n";
+  profiles[currentProfile].sessions.forEach(s => {
+    csv += `"${profiles[currentProfile].name}","${s.date}","${s.mode}","${s.correct}","${s.totalQ}","${s.totalTime}"\n`;
+  });
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `toanvui_thi_dau_${profiles[currentProfile].name}.csv`;
+  link.click();
+}
+
+function openSettings() {
+  if (currentProfile === null) return;
+  
+  document.getElementById('setting-questions-count').value = ['10','20','30'].includes(appSettings.qCountMode) ? appSettings.qCountMode : 'custom';
+  document.getElementById('setting-questions-custom').value = appSettings.qCountCustom || 20;
+
+  document.getElementById('setting-difficulty').value = appSettings.difficulty;
+  document.getElementById('setting-diff-min').value = appSettings.diffMin;
+  document.getElementById('setting-diff-max').value = appSettings.diffMax;
+  document.getElementById('setting-countdown').value = ['3','5','10','15'].includes(appSettings.countdown) ? appSettings.countdown : 'custom';
+  document.getElementById('setting-countdown-custom').value = appSettings.countdownCustom;
+
+  document.getElementById('mix-allow-add').checked = appSettings.mixOps.includes('add');
+  document.getElementById('mix-allow-sub').checked = appSettings.mixOps.includes('sub');
+  document.getElementById('mix-allow-mul').checked = appSettings.mixOps.includes('mul');
+  document.getElementById('mix-allow-div').checked = appSettings.mixOps.includes('div');
+
+  toggleCustomQuestions();
+  toggleCustomDifficulty();
+  toggleCustomCountdown();
+  
+  document.getElementById('file-upload-label-text').textContent = "📂 Chọn file dữ liệu CSV...";
+  document.getElementById('csv-file-input').value = "";
+
+  document.getElementById('settings-modal-overlay').classList.add('open');
+}
+
+function toggleCustomQuestions() {
+  document.getElementById('custom-q-count-group').style.display = (document.getElementById('setting-questions-count').value === 'custom') ? 'block' : 'none';
+}
+function toggleCustomDifficulty() { document.getElementById('custom-diff-group').style.display = (document.getElementById('setting-difficulty').value === 'custom') ? 'grid' : 'none'; }
+function toggleCustomCountdown() { document.getElementById('custom-countdown-group').style.display = (document.getElementById('setting-countdown').value === 'custom') ? 'block' : 'none'; }
+function closeSettingsModal() { document.getElementById('settings-modal-overlay').classList.remove('open'); }
+
+function saveSettings() {
+  if(currentProfile === null) return;
+  
+  const qCountMode = document.getElementById('setting-questions-count').value;
+  let qCountCustom = parseInt(document.getElementById('setting-questions-custom').value) || 20;
+  if (qCountCustom <= 0) qCountCustom = 1;
+
+  const difficulty = document.getElementById('setting-difficulty').value;
+  let min = 10, max = 99;
+  
+  if (difficulty === '2') { min = 10; max = 99; }
+  else if (difficulty === '3') { min = 100; max = 999; }
+  else if (difficulty === '4') { min = 1000; max = 9999; }
+  else {
+    min = parseInt(document.getElementById('setting-diff-min').value);
+    max = parseInt(document.getElementById('setting-diff-max').value);
+  }
+
+  let mixOps = [];
+  if(document.getElementById('mix-allow-add').checked) mixOps.push('add');
+  if(document.getElementById('mix-allow-sub').checked) mixOps.push('sub');
+  if(document.getElementById('mix-allow-mul').checked) mixOps.push('mul');
+  if(document.getElementById('mix-allow-div').checked) mixOps.push('div');
+  
+  if(mixOps.length === 0) { alert("Chế độ Hỗn hợp phải tích chọn tối thiểu 1 phép tính!"); return; }
+
+  appSettings = { 
+    difficulty, diffMin: min, diffMax: max, 
+    countdown: document.getElementById('setting-countdown').value, 
+    countdownCustom: parseInt(document.getElementById('setting-countdown-custom').value) || 3, 
+    qCountMode, qCountCustom, mixOps 
+  };
+  
+  profiles[currentProfile].settings = { ...appSettings };
+  localStorage.setItem('toanyui_profiles_v3', JSON.stringify(profiles));
+
+  const fileInput = document.getElementById('csv-file-input');
+  if (fileInput.files.length > 0) {
+    handleCSVImport(fileInput.files[0]);
+  }
+
+  closeSettingsModal();
+  updateModeHeaderSummary();
+}
+
+function handleCSVImport(file) {
+  if (!file || currentProfile === null) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    const text = evt.target.result;
+    const lines = text.split("\n");
+    let importedCount = 0;
+
+    for(let i = 1; i < lines.length; i++) {
+      const line = lines[i].trim();
+      if(!line) continue;
+      
+      const parts = line.split(",").map(part => part.replace(/^"|"$/g, ''));
+      if(parts.length >= 5) {
+        const date = parts[1]; const mode = parts[2];
+        const correct = parseInt(parts[3]); const totalQ = parseInt(parts[4]);
+        const totalTime = parts[5] || "0";
+
+        if(!isNaN(correct)) {
+          profiles[currentProfile].sessions.push({
+            mode, correct, totalQ, totalTime, date, timestamp: new Date().getTime()
+          });
+          importedCount++;
+        }
+      }
+    }
+    if(importedCount > 0) {
+      localStorage.setItem('toanyui_profiles_v3', JSON.stringify(profiles));
+      renderHistoryTable();
+    }
+  };
+  reader.readAsText(file, "UTF-8");
+}
+
+function updateModeHeaderSummary() {
+  let diffLabel = appSettings.difficulty === 'custom' ? `Tùy chọn (${appSettings.diffMin}-${appSettings.diffMax})` : `${appSettings.difficulty} Chữ số`;
+  let totalQ = getTotalQuestionsConfig();
+  document.getElementById('mode-settings-summary').textContent = `Độ khó: ${diffLabel} · Số lượng: ${totalQ} câu hỏi`;
+}
+
+function confirmExit() { document.getElementById('confirm-exit-modal-overlay').classList.add('open'); }
+function closeExitModal() { document.getElementById('confirm-exit-modal-overlay').classList.remove('open'); }
+function confirmExitAction() { closeExitModal(); clearInterval(totalTimerInterval); showScreen('mode'); }
+
+document.getElementById('answer-input').addEventListener('keydown', function(e) {
+  const allowedSpecialKeys = ['Backspace', 'Delete', 'ArrowLeft', 'ArrowRight', 'Tab', 'Enter'];
+  if (allowedSpecialKeys.includes(e.key)) {
+    if (e.key === 'Backspace') {
+      e.preventDefault();
+      numpadDel(); 
+    }
+    if (e.key === 'Enter' && !document.getElementById('numpad-btn-save').disabled) {
+      saveCurrentAnswer(); 
+    }
+    return;
+  }
+  const isNumber = /^[0-9]$/.test(e.key);
+  const isMinus = e.key === '-';
+  if (!isNumber && !isMinus) {
+    e.preventDefault();
+  }
+});
+
+document.getElementById('answer-input').addEventListener('keyup', validateInputState);
+
+document.getElementById('csv-file-input').addEventListener('change', function(e) {
+  const fileName = e.target.files[0] ? e.target.files[0].name : "Chọn file dữ liệu CSV...";
+  document.getElementById('file-upload-label-text').textContent = "📄 " + fileName;
+});
+
+function initApp() {
+  renderProfiles();
+  if (currentProfile !== null && currentProfile < profiles.length) selectProfile(currentProfile);
+  else showScreen('home');
+}
+initApp();
+</script>
+</body>
+</html>
