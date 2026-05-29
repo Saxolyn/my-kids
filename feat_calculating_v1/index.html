@@ -532,9 +532,9 @@
         <label>Độ khó cơ bản (Số chữ số)</label>
         <div class="select-wrapper">
           <select id="setting-difficulty" onchange="toggleCustomDifficulty()">
+            <option value="1">1 Chữ số (0 - 9)</option>
             <option value="2">2 Chữ số (10 - 99)</option>
             <option value="3">3 Chữ số (100 - 999)</option>
-            <option value="4">4 Chữ số (1000 - 9999)</option>
             <option value="custom">Tùy chọn tự điền dải số...</option>
           </select>
         </div>
@@ -745,7 +745,7 @@ function generateQuestion(mode) {
     actualMode = allowed[Math.floor(Math.random() * allowed.length)];
   }
   
-  let min = parseInt(appSettings.diffMin) || 10;
+  let min = parseInt(appSettings.diffMin) || 1;
   let max = parseInt(appSettings.diffMax) || 99;
 
   if (actualMode === 'add') {
@@ -1064,7 +1064,7 @@ function saveSettings() {
   
   if (difficulty === '2') { min = 10; max = 99; }
   else if (difficulty === '3') { min = 100; max = 999; }
-  else if (difficulty === '4') { min = 1000; max = 9999; }
+  else if (difficulty === '1') { min = 0; max = 9; }
   else {
     min = parseInt(document.getElementById('setting-diff-min').value);
     max = parseInt(document.getElementById('setting-diff-max').value);
